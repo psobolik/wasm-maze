@@ -1,0 +1,20 @@
+{
+  "name": "www",
+  "packageManager": "yarn@3.6.1",
+  "author": "Paul Sobolik <psobolik@zoho.com>",
+  "license": "MIT",
+  "version": "0.1.0",
+  "description": "Rust/WASM project",
+  "main": "index.js",
+  "scripts": {
+    "build": "wasm-pack build --target bundler",
+    "bundle": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
