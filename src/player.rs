@@ -1,5 +1,5 @@
-use maze_lib::maze_generator::coordinates::Coordinates;
-use maze_lib::maze_generator::direction::Direction;
+use maze_lib::maze::coordinates::Coordinates;
+use maze_lib::maze::direction::Direction;
 
 #[derive(Debug)]
 pub struct Player {

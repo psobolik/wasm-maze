@@ -1,8 +1,8 @@
 use maze_lib::maze_generator;
-use maze_lib::maze_generator::cell_edge::CellEdge;
-use maze_lib::maze_generator::cell_grid::CellGrid;
-use maze_lib::maze_generator::coordinates::Coordinates;
-use maze_lib::maze_generator::direction::Direction;
+use maze_lib::maze::Maze;
+use maze_lib::maze::cell_edge::CellEdge;
+use maze_lib::maze::coordinates::Coordinates;
+use maze_lib::maze::direction::Direction;
 
 use crate::player::Player;
 use std::convert::Into;
@@ -18,7 +18,7 @@ pub struct CanvasPoints {
 pub struct WasmMaze {
     columns: u32,
     rows: u32,
-    cells: CellGrid,
+    maze: Maze,
     player: Player,
     goal: Coordinates,
 }
@@ -40,7 +40,7 @@ impl WasmMaze {
         WasmMaze {
             columns,
             rows,
-            cells: maze_generator::generate(columns, rows),
+            maze: maze_generator::generate(columns, rows),
             player: Player::new_with_column_and_row(
                 WasmMaze::CELL_WIDTH,
                 0,
@@ -139,11 +139,11 @@ impl WasmMaze {
         }
         context.save();
         context.set_line_cap("round");
-        for cell in &self.cells {
+        for cell in &self.maze {
             if let Some(cell) = cell {
                 let canvas_coordinates = self.canvas_coordinates(&cell.coordinates());
                 // We draw all borders, but only the East and South walls
-                if cell.get_edge(&Direction::North).unwrap() == CellEdge::Border {
+                if cell.edge(&Direction::North).unwrap() == CellEdge::Border {
                     draw_line(context,
                               canvas_coordinates.left,
                               canvas_coordinates.top,
@@ -152,7 +152,7 @@ impl WasmMaze {
                               &WasmMaze::BORDER_STROKE_STYLE,
                               WasmMaze::BORDER_LINE_WIDTH);
                 }
-                match cell.get_edge(&Direction::East) {
+                match cell.edge(&Direction::East) {
                     Some(CellEdge::Wall) => {
                         draw_line(context,
                                   canvas_coordinates.right,
@@ -173,7 +173,7 @@ impl WasmMaze {
                     },
                     _ => ()
                 }
-                match cell.get_edge(&Direction::South) {
+                match cell.edge(&Direction::South) {
                     Some(CellEdge::Wall) => {
                         draw_line(context,
                                   canvas_coordinates.left,
@@ -194,7 +194,7 @@ impl WasmMaze {
                     },
                     _ => ()
                 }
-                if cell.get_edge(&Direction::West).unwrap() == CellEdge::Border {
+                if cell.edge(&Direction::West).unwrap() == CellEdge::Border {
                     draw_line(context,
                               canvas_coordinates.left,
                               canvas_coordinates.top,
@@ -241,8 +241,8 @@ impl WasmMaze {
     }
 
     fn is_passage(&self, direction: &Direction) -> bool {
-        if let Some(cell) = self.cells.get_cell(&self.player.coordinates()) {
-            if let Some(edge) = cell.get_edge(&direction) {
+        if let Some(cell) = self.maze.cell(&self.player.coordinates()) {
+            if let Some(edge) = cell.edge(&direction) {
                 return edge == CellEdge::Passage;
             }
         }
