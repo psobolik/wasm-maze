@@ -36,7 +36,8 @@ function body_keyup_handler(event) {
 }
 
 function reset() {
-    document.getElementById('success').style.display = 'none';
+    document.getElementById('success').classList.remove('success');
+
     document.body.removeEventListener('keyup', body_keyup_handler);
     maze_engine.change_maze(get_columns(), get_rows());
     document.body.addEventListener('keyup', body_keyup_handler);
@@ -57,7 +58,8 @@ function get_rows() {
 function check_win() {
     if (maze_engine.is_won()) {
         document.body.removeEventListener('keyup', body_keyup_handler);
-        document.getElementById('success').style.display = 'block';
+        document.getElementById('success').classList.add('success');
+
     }
 }
 

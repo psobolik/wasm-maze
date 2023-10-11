@@ -16,9 +16,10 @@ body {
     display: none;
     font-size: xxx-large;
     margin: 1em auto;
+    width: 8.5em;
+    height: 1.5em;
     background: aliceblue;
     color: blue;
-    width: 25%;
     overflow: hidden;
     border-color: red;
     border-width: 0.125em;
@@ -26,10 +27,20 @@ body {
     border-radius: 0.1em;
 }
 
-#success::before {
-    content: "🎉";
+@keyframes show {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 8.5em;
+        opacity: 1;
+    }
 }
 
-#success::after {
-    content: "🎉";
+#success.success {
+    display: block;
+    animation-name: show;
+    animation-timing-function: ease-in;
+    animation-duration: .25s;
 }
