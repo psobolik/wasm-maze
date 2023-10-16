@@ -92,14 +92,12 @@ impl MazeEngine {
             .map_err(|_| ())
             .expect("element with ID 'canvas' should be an HTML canvas element");
 
-        let context = canvas
+        canvas
             .get_context("2d")
             .unwrap()
             .unwrap()
             .dyn_into::<web_sys::CanvasRenderingContext2d>()
-            .expect("HTML canvas element should have a 2D context");
-
-        context
+            .expect("HTML canvas element should have a 2D context")
     }
 }
 
