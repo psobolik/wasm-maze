@@ -1,8 +1,8 @@
-use maze_lib::maze_generator;
-use maze_lib::maze::Maze;
 use maze_lib::maze::cell_edge::CellEdge;
 use maze_lib::maze::coordinates::Coordinates;
 use maze_lib::maze::direction::Direction;
+use maze_lib::maze::Maze;
+use maze_lib::maze_generator;
 
 use crate::player::Player;
 use std::convert::Into;
@@ -128,7 +128,7 @@ impl WasmMaze {
             end_x: f64,
             end_y: f64,
             style: &str,
-            width: f64
+            width: f64,
         ) {
             context.begin_path();
             context.move_to(start_x, start_y);
@@ -143,64 +143,76 @@ impl WasmMaze {
             let canvas_coordinates = self.canvas_coordinates(&cell.coordinates());
             // We draw all borders, but only the East and South walls
             if cell.edge(&Direction::North).unwrap() == CellEdge::Border {
-                draw_line(context,
-                          canvas_coordinates.left,
-                          canvas_coordinates.top,
-                          canvas_coordinates.right,
-                          canvas_coordinates.top,
-                          WasmMaze::BORDER_STROKE_STYLE,
-                          WasmMaze::BORDER_LINE_WIDTH);
+                draw_line(
+                    context,
+                    canvas_coordinates.left,
+                    canvas_coordinates.top,
+                    canvas_coordinates.right,
+                    canvas_coordinates.top,
+                    WasmMaze::BORDER_STROKE_STYLE,
+                    WasmMaze::BORDER_LINE_WIDTH,
+                );
             }
             match cell.edge(&Direction::East) {
                 Some(CellEdge::Wall) => {
-                    draw_line(context,
-                              canvas_coordinates.right,
-                              canvas_coordinates.top,
-                              canvas_coordinates.right,
-                              canvas_coordinates.bottom,
-                              WasmMaze::WALL_STROKE_STYLE,
-                              WasmMaze::WALL_LINE_WIDTH);
-                },
+                    draw_line(
+                        context,
+                        canvas_coordinates.right,
+                        canvas_coordinates.top,
+                        canvas_coordinates.right,
+                        canvas_coordinates.bottom,
+                        WasmMaze::WALL_STROKE_STYLE,
+                        WasmMaze::WALL_LINE_WIDTH,
+                    );
+                }
                 Some(CellEdge::Border) => {
-                    draw_line(context,
-                              canvas_coordinates.right,
-                              canvas_coordinates.top,
-                              canvas_coordinates.right,
-                              canvas_coordinates.bottom,
-                              WasmMaze::BORDER_STROKE_STYLE,
-                              WasmMaze::BORDER_LINE_WIDTH);
-                },
-                _ => ()
+                    draw_line(
+                        context,
+                        canvas_coordinates.right,
+                        canvas_coordinates.top,
+                        canvas_coordinates.right,
+                        canvas_coordinates.bottom,
+                        WasmMaze::BORDER_STROKE_STYLE,
+                        WasmMaze::BORDER_LINE_WIDTH,
+                    );
+                }
+                _ => (),
             }
             match cell.edge(&Direction::South) {
                 Some(CellEdge::Wall) => {
-                    draw_line(context,
-                              canvas_coordinates.left,
-                              canvas_coordinates.bottom,
-                              canvas_coordinates.right,
-                              canvas_coordinates.bottom,
-                              WasmMaze::WALL_STROKE_STYLE,
-                              WasmMaze::WALL_LINE_WIDTH);
-                },
+                    draw_line(
+                        context,
+                        canvas_coordinates.left,
+                        canvas_coordinates.bottom,
+                        canvas_coordinates.right,
+                        canvas_coordinates.bottom,
+                        WasmMaze::WALL_STROKE_STYLE,
+                        WasmMaze::WALL_LINE_WIDTH,
+                    );
+                }
                 Some(CellEdge::Border) => {
-                    draw_line(context,
-                              canvas_coordinates.left,
-                              canvas_coordinates.bottom,
-                              canvas_coordinates.right,
-                              canvas_coordinates.bottom,
-                              WasmMaze::BORDER_STROKE_STYLE,
-                              WasmMaze::BORDER_LINE_WIDTH);
-                },
-                _ => ()
+                    draw_line(
+                        context,
+                        canvas_coordinates.left,
+                        canvas_coordinates.bottom,
+                        canvas_coordinates.right,
+                        canvas_coordinates.bottom,
+                        WasmMaze::BORDER_STROKE_STYLE,
+                        WasmMaze::BORDER_LINE_WIDTH,
+                    );
+                }
+                _ => (),
             }
             if cell.edge(&Direction::West).unwrap() == CellEdge::Border {
-                draw_line(context,
-                          canvas_coordinates.left,
-                          canvas_coordinates.top,
-                          canvas_coordinates.left,
-                          canvas_coordinates.bottom,
-                          WasmMaze::BORDER_STROKE_STYLE,
-                          WasmMaze::BORDER_LINE_WIDTH);
+                draw_line(
+                    context,
+                    canvas_coordinates.left,
+                    canvas_coordinates.top,
+                    canvas_coordinates.left,
+                    canvas_coordinates.bottom,
+                    WasmMaze::BORDER_STROKE_STYLE,
+                    WasmMaze::BORDER_LINE_WIDTH,
+                );
             }
         }
         // context.stroke();

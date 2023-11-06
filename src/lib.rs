@@ -1,11 +1,11 @@
+pub mod player;
 mod utils;
 mod wasm_maze;
-pub mod player;
 
 use wasm_bindgen::prelude::*;
 
-use crate::wasm_maze::WasmMaze;
 use crate::utils::set_panic_hook;
+use crate::wasm_maze::WasmMaze;
 
 #[wasm_bindgen]
 pub struct MazeEngine {
@@ -85,7 +85,9 @@ impl MazeEngine {
 
         let window = web_sys::window().expect("should be a global `window`");
         let document = window.document().expect("window should have a document");
-        let canvas = document.get_element_by_id(id).expect("document should have an element with ID 'canvas'");
+        let canvas = document
+            .get_element_by_id(id)
+            .expect("document should have an element with ID 'canvas'");
 
         let canvas: web_sys::HtmlCanvasElement = canvas
             .dyn_into::<web_sys::HtmlCanvasElement>()

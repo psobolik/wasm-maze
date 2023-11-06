@@ -27,18 +27,37 @@ impl Player {
     }
 
     /// Returns a player with the given attributes at (0,0), facing north
-    pub fn new(height: f64, stroke_color: wasm_bindgen::JsValue, fill_color: wasm_bindgen::JsValue) -> Player {
+    pub fn new(
+        height: f64,
+        stroke_color: wasm_bindgen::JsValue,
+        fill_color: wasm_bindgen::JsValue,
+    ) -> Player {
         Player::new_with_column_and_row(height, 0, 0, stroke_color, fill_color)
     }
 
     /// Returns a player with the given attributes and location, facing north
-    pub fn new_with_column_and_row(height: f64, column: u32, row: u32, stroke_color: wasm_bindgen::JsValue, fill_color: wasm_bindgen::JsValue) -> Player {
-        Player::new_with_coordinates(height, Coordinates::new(column as i32, row as i32), stroke_color, fill_color)
+    pub fn new_with_column_and_row(
+        height: f64,
+        column: u32,
+        row: u32,
+        stroke_color: wasm_bindgen::JsValue,
+        fill_color: wasm_bindgen::JsValue,
+    ) -> Player {
+        Player::new_with_coordinates(
+            height,
+            Coordinates::new(column as i32, row as i32),
+            stroke_color,
+            fill_color,
+        )
     }
 
-
     /// Returns a player with the given attributes and location, facing north
-    pub fn new_with_coordinates(height: f64, coordinates: Coordinates, stroke_color: wasm_bindgen::JsValue, fill_color: wasm_bindgen::JsValue) -> Player {
+    pub fn new_with_coordinates(
+        height: f64,
+        coordinates: Coordinates,
+        stroke_color: wasm_bindgen::JsValue,
+        fill_color: wasm_bindgen::JsValue,
+    ) -> Player {
         Player {
             // height,
             size: height / 2.0,
@@ -50,19 +69,19 @@ impl Player {
     }
 
     pub fn move_north(&mut self) {
-        self.coordinates = self.coordinates + Direction::North.coordinates();
+        self.coordinates += Direction::North.coordinates();
     }
 
     pub fn move_east(&mut self) {
-        self.coordinates = self.coordinates + Direction::East.coordinates();
+        self.coordinates += Direction::East.coordinates();
     }
 
     pub fn move_south(&mut self) {
-        self.coordinates = self.coordinates + Direction::South.coordinates();
+        self.coordinates += Direction::South.coordinates();
     }
 
     pub fn move_west(&mut self) {
-        self.coordinates = self.coordinates + Direction::West.coordinates();
+        self.coordinates += Direction::West.coordinates();
     }
 
     /// Returns the angle in radians that the player should be rotated clockwise to face in the correct direction
@@ -85,8 +104,8 @@ impl Player {
         context.set_stroke_style(&self.stroke_color);
         context.begin_path();
         context.move_to(-self.size, self.size);
-        context.line_to( 0.0,-self.size);
-        context.line_to( self.size,self.size);
+        context.line_to(0.0, -self.size);
+        context.line_to(self.size, self.size);
         context.close_path();
         context.fill();
         context.stroke();

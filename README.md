@@ -28,4 +28,3 @@ The app uses `webpack` to build everything into a distributable package.
 > git commit -m"Added maze_lib submodule"
 ```
 I also had to change `Cargo.toml` to look for `maze_lib` in the subfolder.
-
