@@ -1,7 +1,7 @@
 [package]
 name = "wasm-maze"
-version = "0.1.0"
-description = "A Maze"
+version = "0.1.1"
+description = "A Rust/WASM Maze"
 license = "MIT"
 repository = ""
 authors = ["Paul Sobolik <psobolik@zoho.com>"]

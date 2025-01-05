@@ -5,7 +5,6 @@ use maze_lib::maze::Maze;
 use maze_lib::maze_generator;
 
 use crate::player::Player;
-use std::convert::Into;
 
 pub struct CanvasPoints {
     pub top: f64,
@@ -45,8 +44,8 @@ impl WasmMaze {
                 WasmMaze::CELL_WIDTH,
                 0,
                 rows - 1,
-                WasmMaze::PLAYER_STROKE_STYLE.into(),
-                WasmMaze::PLAYER_FILL_STYLE.into(),
+                WasmMaze::PLAYER_STROKE_STYLE,
+                WasmMaze::PLAYER_FILL_STYLE,
             ),
             goal: Coordinates::new((columns - 1) as i32, 0i32),
         }
@@ -95,11 +94,11 @@ impl WasmMaze {
 
     fn draw_grid(&self, context: &web_sys::CanvasRenderingContext2d) {
         context.save();
-        context.set_fill_style(&WasmMaze::GRID_FILL_STYLE.into());
+        context.set_fill_style_str(WasmMaze::GRID_FILL_STYLE);
         context.fill_rect(0.0, 0.0, self.maze_width(), self.maze_height());
 
         context.begin_path();
-        context.set_stroke_style(&WasmMaze::GRID_STROKE_STYLE.into());
+        context.set_stroke_style_str(WasmMaze::GRID_STROKE_STYLE);
 
         let mut x = -self.offset();
         let mut y = 0.0;
@@ -133,7 +132,7 @@ impl WasmMaze {
             context.begin_path();
             context.move_to(start_x, start_y);
             context.line_to(end_x, end_y);
-            context.set_stroke_style(&style.into());
+            context.set_stroke_style_str(style);
             context.set_line_width(width);
             context.stroke();
         }
@@ -234,8 +233,8 @@ impl WasmMaze {
         let goal_maze_coordinates = self.canvas_coordinates(&self.goal);
 
         context.save();
-        context.set_fill_style(&WasmMaze::GOAL_FILL_STYLE.into());
-        context.set_stroke_style(&WasmMaze::GOAL_STROKE_STYLE.into());
+        context.set_fill_style_str(WasmMaze::GOAL_FILL_STYLE);
+        context.set_stroke_style_str(WasmMaze::GOAL_STROKE_STYLE);
         context.set_line_width(1.0);
         context
             .translate(

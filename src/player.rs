@@ -6,8 +6,8 @@ pub struct Player {
     size: f64,
     coordinates: Coordinates,
     direction: Direction,
-    stroke_color: wasm_bindgen::JsValue,
-    fill_color: wasm_bindgen::JsValue,
+    stroke_color: String,
+    fill_color: String,
 }
 
 impl Player {
@@ -29,8 +29,8 @@ impl Player {
     /// Returns a player with the given attributes at (0,0), facing north
     pub fn new(
         height: f64,
-        stroke_color: wasm_bindgen::JsValue,
-        fill_color: wasm_bindgen::JsValue,
+        stroke_color: &str,
+        fill_color: &str,
     ) -> Player {
         Player::new_with_column_and_row(height, 0, 0, stroke_color, fill_color)
     }
@@ -40,8 +40,8 @@ impl Player {
         height: f64,
         column: u32,
         row: u32,
-        stroke_color: wasm_bindgen::JsValue,
-        fill_color: wasm_bindgen::JsValue,
+        stroke_color: &str,
+        fill_color: &str,
     ) -> Player {
         Player::new_with_coordinates(
             height,
@@ -55,15 +55,15 @@ impl Player {
     pub fn new_with_coordinates(
         height: f64,
         coordinates: Coordinates,
-        stroke_color: wasm_bindgen::JsValue,
-        fill_color: wasm_bindgen::JsValue,
+        stroke_color: &str,
+        fill_color: &str,
     ) -> Player {
         Player {
             // height,
             size: height / 2.0,
             coordinates,
-            stroke_color,
-            fill_color,
+            stroke_color: stroke_color.to_string(),
+            fill_color: fill_color.to_string(),
             direction: Direction::North,
         }
     }
@@ -100,8 +100,8 @@ impl Player {
         context.translate(self.size, self.size).unwrap();
         context.scale(0.75, 0.75).unwrap();
         context.rotate(self.rotation()).unwrap();
-        context.set_fill_style(&self.fill_color);
-        context.set_stroke_style(&self.stroke_color);
+        context.set_fill_style_str(self.fill_color.as_str());
+        context.set_stroke_style_str(self.stroke_color.as_str());
         context.begin_path();
         context.move_to(-self.size, self.size);
         context.line_to(0.0, -self.size);
