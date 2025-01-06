@@ -25,7 +25,16 @@ body {
     border-width: 0.125em;
     border-style: solid;
     border-radius: 0.1em;
+    padding-top: 0.35em;
+
+    &.success {
+        display: block;
+        animation-name: show;
+        animation-timing-function: ease-in;
+        animation-duration: .25s;
+    }
 }
+
 
 @keyframes show {
     from {
@@ -36,11 +45,4 @@ body {
         width: 8.5em;
         opacity: 1;
     }
-}
-
-#success.success {
-    display: block;
-    animation-name: show;
-    animation-timing-function: ease-in;
-    animation-duration: .25s;
 }

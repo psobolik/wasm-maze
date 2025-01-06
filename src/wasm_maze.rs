@@ -141,16 +141,19 @@ impl WasmMaze {
         for cell in (&self.maze).into_iter().flatten() {
             let canvas_coordinates = self.canvas_coordinates(&cell.coordinates());
             // We draw all borders, but only the East and South walls
-            if cell.edge(&Direction::North).unwrap() == CellEdge::Border {
-                draw_line(
-                    context,
-                    canvas_coordinates.left,
-                    canvas_coordinates.top,
-                    canvas_coordinates.right,
-                    canvas_coordinates.top,
-                    WasmMaze::BORDER_STROKE_STYLE,
-                    WasmMaze::BORDER_LINE_WIDTH,
-                );
+            match cell.edge(&Direction::North) {
+                Some(CellEdge::Border) => {
+                    draw_line(
+                        context,
+                        canvas_coordinates.left,
+                        canvas_coordinates.top,
+                        canvas_coordinates.right,
+                        canvas_coordinates.top,
+                        WasmMaze::BORDER_STROKE_STYLE,
+                        WasmMaze::BORDER_LINE_WIDTH,
+                    );
+                }
+                _ => {}
             }
             match cell.edge(&Direction::East) {
                 Some(CellEdge::Wall) => {
@@ -202,19 +205,21 @@ impl WasmMaze {
                 }
                 _ => (),
             }
-            if cell.edge(&Direction::West).unwrap() == CellEdge::Border {
-                draw_line(
-                    context,
-                    canvas_coordinates.left,
-                    canvas_coordinates.top,
-                    canvas_coordinates.left,
-                    canvas_coordinates.bottom,
-                    WasmMaze::BORDER_STROKE_STYLE,
-                    WasmMaze::BORDER_LINE_WIDTH,
-                );
+            match cell.edge(&Direction::West) {
+                Some(CellEdge::Border) => {
+                    draw_line(
+                        context,
+                        canvas_coordinates.left,
+                        canvas_coordinates.top,
+                        canvas_coordinates.left,
+                        canvas_coordinates.bottom,
+                        WasmMaze::BORDER_STROKE_STYLE,
+                        WasmMaze::BORDER_LINE_WIDTH,
+                    );
+                }
+                _ => {}
             }
         }
-        // context.stroke();
         context.restore();
     }
 

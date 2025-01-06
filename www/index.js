@@ -4,17 +4,20 @@ const min_size = 10;
 const max_size = 50;
 const default_size = 20;
 
+let award_index = 0;
+const awards = ['🥇','🏆','👍','🎉'];
+
 setup_input('columns');
 setup_input('rows');
 
 const maze_engine = wasm.MazeEngine.new(get_columns(), get_rows(), "canvas");
 
-document.body.addEventListener('keyup', body_keyup_handler);
+document.body.addEventListener('keyup', player_keyup_handler);
 document
     .getElementById('reset')
     .addEventListener('click', reset);
 
-function body_keyup_handler(event) {
+function player_keyup_handler(event) {
     switch (event.key) {
         case "ArrowUp":
             if (maze_engine.move_player_north())
@@ -35,12 +38,18 @@ function body_keyup_handler(event) {
     }
 }
 
+function win_keyup_handler(event) {
+    if (!event.key in ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"])
+        reset();
+}
 function reset() {
     document.getElementById('success').classList.remove('success');
 
-    document.body.removeEventListener('keyup', body_keyup_handler);
+    document.body.removeEventListener('keyup', win_keyup_handler);
+    document.body.removeEventListener('mouseup', reset);
+    document.body.removeEventListener('keyup', player_keyup_handler);
     maze_engine.change_maze(get_columns(), get_rows());
-    document.body.addEventListener('keyup', body_keyup_handler);
+    document.body.addEventListener('keyup', player_keyup_handler);
 }
 
 function clamp(value, min, max) {
@@ -57,9 +66,15 @@ function get_rows() {
 
 function check_win() {
     if (maze_engine.is_won()) {
-        document.body.removeEventListener('keyup', body_keyup_handler);
-        document.getElementById('success').classList.add('success');
-
+        document.body.removeEventListener('keyup', player_keyup_handler);
+        document.body.addEventListener('keyup', win_keyup_handler);
+        document.body.addEventListener('mouseup', reset);
+        const success = document.getElementById('success');
+        // Rotate "award"
+        const award = awards[award_index];
+        award_index = (award_index + 1) % 4;
+        success.innerText = `${award}\xa0SUCCESS!\xa0${award}`
+        success.classList.add('success');
     }
 }
 
